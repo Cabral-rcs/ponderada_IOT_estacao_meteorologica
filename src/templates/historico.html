@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Histórico</h2>
+
+<table>
+    <tr>
+        <th>ID</th>
+        <th>Temperatura</th>
+        <th>Umidade</th>
+        <th>Ações</th>
+    </tr>
+
+    {% for l in leituras %}
+    <tr>
+        <td>{{ l.id }}</td>
+        <td>{{ l.temperatura }}</td>
+        <td>{{ l.umidade }}</td>
+        <td>
+            <a href="/leituras/{{ l.id }}">Editar</a>
+            <button onclick="deletar({{ l.id }})">Excluir</button>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+
+<script>
+function deletar(id){
+    fetch(`/leituras/${id}`, {
+        method: 'DELETE'
+    }).then(() => location.reload());
+}
+</script>
+
+{% endblock %}

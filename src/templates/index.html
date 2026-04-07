@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Últimas Leituras</h2>
+
+<div class="cards">
+    {% for l in leituras %}
+    <div class="card">
+        <p>🌡️ {{ l.temperatura }} °C</p>
+        <p>💧 {{ l.umidade }} %</p>
+        <small>{{ l.timestamp }}</small>
+    </div>
+    {% endfor %}
+</div>
+
+<h2>Gráfico</h2>
+<canvas id="grafico"></canvas>
+
+<script>
+const dados = {{ leituras|tojson }};
+
+const labels = dados.map(d => d.timestamp);
+const temps = dados.map(d => d.temperatura);
+
+new Chart(document.getElementById('grafico'), {
+    type: 'line',
+    data: {
+        labels: labels,
+        datasets: [{
+            label: 'Temperatura',
+            data: temps
+        }]
+    }
+});
+</script>
+
+{% endblock %}

@@ -1,0 +1,41 @@
+body {
+    font-family: Arial;
+    background: #f4f4f4;
+    margin: 0;
+}
+
+nav {
+    background: #333;
+    color: white;
+    padding: 15px;
+}
+
+nav a {
+    color: white;
+    margin-left: 15px;
+    text-decoration: none;
+}
+
+.container {
+    padding: 20px;
+}
+
+.cards {
+    display: flex;
+    gap: 10px;
+}
+
+.card {
+    background: white;
+    padding: 15px;
+    border-radius: 8px;
+}
+
+table {
+    width: 100%;
+    background: white;
+}
+
+td, th {
+    padding: 10px;
+}
