@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
+
 <h2>Últimas Leituras</h2>
 
 <div class="cards">
@@ -16,21 +17,33 @@
 <h2>Gráfico</h2>
 <canvas id="grafico"></canvas>
 
+<p id="status">Atualizando automaticamente a cada 5 segundos...</p>
+
 <script>
-const dados = {{ leituras|tojson }};
+document.addEventListener("DOMContentLoaded", function() {
 
-const labels = dados.map(d => d.timestamp);
-const temps = dados.map(d => d.temperatura);
+    const dados = {{ leituras|tojson }};
 
-new Chart(document.getElementById('grafico'), {
-    type: 'line',
-    data: {
-        labels: labels,
-        datasets: [{
-            label: 'Temperatura',
-            data: temps
-        }]
-    }
+    const labels = dados.map(d => d.timestamp);
+    const temps = dados.map(d => d.temperatura);
+
+    const ctx = document.getElementById('grafico').getContext('2d');
+
+    new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Temperatura',
+                data: temps
+            }]
+        }
+    });
+
+    setInterval(() => {
+        location.reload();
+    }, 5000);
+
 });
 </script>
 

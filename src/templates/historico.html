@@ -30,6 +30,9 @@ function deletar(id){
         method: 'DELETE'
     }).then(() => location.reload());
 }
+setInterval(() => {
+        location.reload();
+    }, 5000);
 </script>
 
 {% endblock %}
