@@ -51,8 +51,7 @@ projeto/
 ### 1. Clonar o repositório
 
 ```
-git clone <URL_DO_REPOSITORIO>
-cd projeto
+git clone https://github.com/Cabral-rcs/ponderada_IOT_estacao_meteorologica.git
 ```
 
 ### 2. Criar ambiente virtual
