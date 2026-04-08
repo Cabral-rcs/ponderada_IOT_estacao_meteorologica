@@ -1,38 +1,57 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h2>Histórico</h2>
 
-<table>
-    <tr>
-        <th>ID</th>
-        <th>Temperatura</th>
-        <th>Umidade</th>
-        <th>Ações</th>
-    </tr>
+<div class="mb-4">
+    <a href="/"
+       class="bg-gray-700 px-4 py-2 rounded-lg hover:bg-gray-600">
+        ← Voltar para Dashboard
+    </a>
+</div>
 
-    {% for l in leituras %}
-    <tr>
-        <td>{{ l.id }}</td>
-        <td>{{ l.temperatura }}</td>
-        <td>{{ l.umidade }}</td>
-        <td>
-            <a href="/leituras/{{ l.id }}">Editar</a>
-            <button onclick="deletar({{ l.id }})">Excluir</button>
-        </td>
-    </tr>
-    {% endfor %}
-</table>
+<div class="bg-slate-900 p-6 rounded-xl">
+    <h2 class="text-xl mb-4">Histórico Completo</h2>
+
+    <div class="overflow-y-auto max-h-[500px]">
+        <table class="w-full text-left">
+            <thead>
+                <tr class="text-gray-400 border-b border-gray-700">
+                    <th class="p-2">ID</th>
+                    <th class="p-2">Data/Hora</th>
+                    <th class="p-2">Temp</th>
+                    <th class="p-2">Umidade</th>
+                    <th class="p-2">Ações</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for l in leituras %}
+                <tr class="border-b border-gray-800 hover:bg-slate-800">
+                    <td class="p-2">{{ l.id }}</td>
+                    <td class="p-2">{{ l.timestamp }}</td>
+                    <td class="p-2 text-cyan-400">{{ l.temperatura }}</td>
+                    <td class="p-2 text-blue-400">{{ l.umidade }}</td>
+                    <td class="p-2">
+                        <a href="/leituras/{{ l.id }}"
+                           class="text-green-400 mr-2">Editar</a>
+
+                        <button onclick="deletar({{ l.id }})"
+                                class="text-red-400">
+                            Excluir
+                        </button>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
 
 <script>
 function deletar(id){
-    fetch(`/leituras/${id}`, {
-        method: 'DELETE'
-    }).then(() => location.reload());
+    fetch(`/leituras/${id}`, { method: 'DELETE' })
+    .then(() => location.reload());
 }
-setInterval(() => {
-        location.reload();
-    }, 5000);
 </script>
 
 {% endblock %}

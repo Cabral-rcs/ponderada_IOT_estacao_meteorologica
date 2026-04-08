@@ -10,11 +10,13 @@ Os dados de temperatura e umidade foram simulados utilizando o script `serial_re
 
 ## Tecnologias Utilizadas
 
-* Python 3
-* Flask
-* SQLite
-* HTML, CSS e JavaScript
-* Chart.js
+- Python 3
+- Flask
+- SQLite
+- HTML, CSS e JavaScript
+- Chart.js
+- Tailwind CSS (via CDN para estilização moderna)
+
 
 ---
 
@@ -112,6 +114,31 @@ Esse script simula um dispositivo físico enviando leituras de temperatura e umi
 
 ---
 
+## Interface Web 
+
+- Uso de Tailwind CSS para estilização responsiva
+- Cards com exibição em tempo real de temperatura e umidade atuais
+- Gráfico interativo com Chart.js exibindo variação de temperatura e umidade
+- Atualização automática dos dados a cada 5 segundos
+- Tabela com as últimas 20 leituras diretamente no dashboard
+- Navegação entre páginas (Dashboard, Histórico e Edição)
+
+### Fluxo de navegação
+
+- Dashboard (/)
+  - Exibe temperatura e umidade atuais
+  - Exibe gráfico de variação
+  - Exibe últimas 20 leituras
+  - Possui botão para acessar o histórico completo
+
+- Histórico (/leituras)
+  - Exibe tabela com todas as leituras
+  - Permite editar ou excluir registros
+  - Possui botão para retornar ao dashboard
+
+- Edição (/leituras/<id>)
+  - Permite alterar temperatura e umidade
+  - Salva via requisição P
 ## Banco de Dados
 
 O banco de dados utilizado é o SQLite, armazenado no arquivo:

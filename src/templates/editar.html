@@ -2,56 +2,45 @@
 
 {% block content %}
 
-<h2>Editar Leitura</h2>
+<div class="mb-4">
+    <a href="/leituras"
+       class="bg-gray-700 px-4 py-2 rounded-lg hover:bg-gray-600">
+        ← Voltar
+    </a>
+</div>
 
-<form id="form" novalidate>
-    <label>Temperatura:</label><br>
-    <input 
-        type="number" 
-        step="any" 
-        id="temp" 
-        value="{{ leitura.temperatura }}"
-        required
-    ><br><br>
+<div class="bg-slate-900 p-6 rounded-xl max-w-md">
+    <h2 class="text-xl mb-4">Editar Leitura</h2>
 
-```
-<label>Umidade:</label><br>
-<input 
-    type="number" 
-    step="any" 
-    id="umid" 
-    value="{{ leitura.umidade }}"
-    required
-><br><br>
+    <form id="form">
 
-<button type="submit">Salvar</button>
-```
+        <input class="w-full mb-3 p-2 bg-slate-800 rounded"
+            type="number" step="any" id="temp"
+            value="{{ leitura.temperatura }}">
 
-</form>
+        <input class="w-full mb-3 p-2 bg-slate-800 rounded"
+            type="number" step="any" id="umid"
+            value="{{ leitura.umidade }}">
+
+        <button class="bg-green-500 px-4 py-2 rounded">
+            Salvar
+        </button>
+
+    </form>
+</div>
 
 <script>
-document.getElementById('form').addEventListener('submit', function(e){
+form.addEventListener('submit', e => {
     e.preventDefault();
-
-    const temp = document.getElementById('temp').value.replace(',', '.');
-    const umid = document.getElementById('umid').value.replace(',', '.');
 
     fetch(`/leituras/{{ leitura.id }}`, {
         method: 'PUT',
-        headers: {
-            'Content-Type': 'application/json'
-        },
+        headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({
-            temperatura: parseFloat(temp),
-            umidade: parseFloat(umid)
+            temperatura: parseFloat(temp.value),
+            umidade: parseFloat(umid.value)
         })
-    })
-    .then(() => {
-        window.location.href = "/leituras";
-    })
-    .catch(() => {
-        alert("Erro ao atualizar");
-    });
+    }).then(() => window.location.href = "/leituras");
 });
 </script>
 

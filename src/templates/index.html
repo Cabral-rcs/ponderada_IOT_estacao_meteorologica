@@ -2,49 +2,96 @@
 
 {% block content %}
 
-<h2>Últimas Leituras</h2>
+<!-- CARDS -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
 
-<div class="cards">
-    {% for l in leituras %}
-    <div class="card">
-        <p>🌡️ {{ l.temperatura }} °C</p>
-        <p>💧 {{ l.umidade }} %</p>
-        <small>{{ l.timestamp }}</small>
+    <div class="bg-slate-900 p-5 rounded-xl border border-cyan-500 card-hover">
+        <p class="text-gray-400">TEMPERATURA</p>
+        <h2 class="text-3xl text-cyan-400 font-bold">
+            {{ leituras[0].temperatura }}°C
+        </h2>
     </div>
-    {% endfor %}
+
+    <div class="bg-slate-900 p-5 rounded-xl border border-blue-500 card-hover">
+        <p class="text-gray-400">UMIDADE</p>
+        <h2 class="text-3xl text-blue-400 font-bold">
+            {{ leituras[0].umidade }}%
+        </h2>
+    </div>
+
 </div>
 
-<h2>Gráfico</h2>
-<canvas id="grafico"></canvas>
+<!-- BOTÃO HISTÓRICO -->
+<div class="mb-6">
+    <a href="/leituras"
+       class="bg-cyan-500 px-4 py-2 rounded-lg text-black font-semibold hover:bg-cyan-400">
+        Ver Histórico
+    </a>
+</div>
 
-<p id="status">Atualizando automaticamente a cada 5 segundos...</p>
+<!-- GRÁFICO -->
+<div class="bg-slate-900 p-6 rounded-xl mb-6">
+    <h2 class="text-lg mb-4">Variação de Temperatura & Umidade</h2>
+    <canvas id="grafico"></canvas>
+</div>
+
+<!-- TABELA ÚLTIMAS 20 -->
+<div class="bg-slate-900 p-6 rounded-xl">
+    <h2 class="text-lg mb-4">Últimas 20 Leituras</h2>
+
+    <table class="w-full text-left">
+        <thead>
+            <tr class="text-gray-400 border-b border-gray-700">
+                <th class="p-2">Data/Hora</th>
+                <th class="p-2">Temp (°C)</th>
+                <th class="p-2">Umidade (%)</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for l in leituras[:20] %}
+            <tr class="border-b border-gray-800">
+                <td class="p-2">{{ l.timestamp }}</td>
+                <td class="p-2 text-cyan-400">{{ l.temperatura }}</td>
+                <td class="p-2 text-blue-400">{{ l.umidade }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
 
 <script>
-document.addEventListener("DOMContentLoaded", function() {
+const dados = {{ leituras|tojson }};
 
-    const dados = {{ leituras|tojson }};
-
-    const labels = dados.map(d => d.timestamp);
-    const temps = dados.map(d => d.temperatura);
-
-    const ctx = document.getElementById('grafico').getContext('2d');
-
-    new Chart(ctx, {
-        type: 'line',
-        data: {
-            labels: labels,
-            datasets: [{
+new Chart(document.getElementById('grafico'), {
+    type: 'line',
+    data: {
+        labels: dados.map(d => d.timestamp),
+        datasets: [
+            {
                 label: 'Temperatura',
-                data: temps
-            }]
+                data: dados.map(d => d.temperatura),
+                tension: 0.4
+            },
+            {
+                label: 'Umidade',
+                data: dados.map(d => d.umidade),
+                tension: 0.4
+            }
+        ]
+    },
+    options: {
+        plugins: {
+            legend: { labels: { color: 'white' } }
+        },
+        scales: {
+            x: { ticks: { color: 'gray' } },
+            y: { ticks: { color: 'gray' } }
         }
-    });
-
-    setInterval(() => {
-        location.reload();
-    }, 5000);
-
+    }
 });
+
+setInterval(() => location.reload(), 10000);
 </script>
 
 {% endblock %}
